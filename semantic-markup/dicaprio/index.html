@@ -7,7 +7,8 @@
 	<body
         xmlns:schema="http://schema.org/"
         xmlns:dc="http://purl.org/dc/elements/1.1/"
-        xmlns:foaf="http://xmlns.com/foaf/0.1/">
+        xmlns:foaf="http://xmlns.com/foaf/0.1/"
+        xmlns:movie="http://data.linkedmdb.org/resource/movie/">
         	
 		<div typeof="schema:Person">
         <h1><span property="schema:givenName">Leonardo</span> <span property="schema:familyName">DiCaprio</span></h1>
@@ -19,7 +20,7 @@
 		we can add movies he starred, girls (models) he dated, prizes he (didn't) won, 
 		and some of this charity work-->
 		
-		<h2>Personal Information</h2> <!--Name, birthdate, etc.-->
+		<h2>Personal Information</h2>
 		
 		<p>
 			<strong>Name</strong>: <span property="schema:name">Leonardo Wilhelm DiCaprio</span><br>
@@ -32,32 +33,14 @@
 		
 		<h2>Latest Movies</h2> <!--Movie title, movie poster, year of making, co-stars-->
 		
-		<table>
-	            <thead colspan="2">
-	                <th>The Revenant (<em>2015</em>)</th>
-	            </thead>
-	        
-	            <tbody>
-	            <tr>
-	            	<td>
-	            	    <a href="http://www.imdb.com/title/tt1375666/?ref_=nm_knf_i1"><img src="http://ia.media-imdb.com/images/M/MV5BMjU4NDExNDM1NF5BMl5BanBnXkFtZTgwMDIyMTgxNzE@._V1_UX182_CR0,0,182,268_AL_.jpg"/>
-	                </td></a>
-	            
-	                <td>
-	            	    <video controls>
-	                	<source src="https://youtu.be/LoebZZ8K5N0">
-	            	    </video>
-	            	</td>
-	            </tr>
-	            </tbody>
-	        </table>
 		
-		<h2>Girlfriends</h2> <!--Pictures, names, ages, occupation-->
-		
-		<h2>Charity</h2> <!--Logo, charity name, charity subject-->
-		
-        
+        <div typeof="movie:film">
+            <h4><span property="dc:title">The Revenant</span> (<em property="movie:initial_release_date">2015-12-16</em>)</h4>
+            
+            <a href="http://www.imdb.com/title/tt1663202/" rel="foaf:page"><img src="images/the-revenant.jpg"/></a>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/LoebZZ8K5N0" frameborder="0" allowfullscreen></iframe>
+        </div> 
+		       
         </div>
 	</body>
-
 </html>
