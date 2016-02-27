@@ -8,7 +8,8 @@
         xmlns:schema="http://schema.org/"
         xmlns:dc="http://purl.org/dc/elements/1.1/"
         xmlns:foaf="http://xmlns.com/foaf/0.1/"
-        xmlns:movie="http://data.linkedmdb.org/resource/movie/">
+        xmlns:movie="http://data.linkedmdb.org/resource/movie/"
+        xmlns:vocab="http://purl.org/vocab/relationship/">
         	
 		<div typeof="schema:Person">
         <h1><span property="schema:givenName">Leonardo</span> <span property="schema:familyName">DiCaprio</span></h1>
@@ -32,14 +33,22 @@
             
             <a href="http://www.imdb.com/title/tt1663202/" rel="foaf:page"><img src="images/the-revenant.jpg"/></a>
             <iframe width="560" height="315" src="https://www.youtube.com/embed/LoebZZ8K5N0" frameborder="0" allowfullscreen></iframe>
-        </div> 
-		<br>
+            <br>
+            <strong>Works with</strong>: 
+                <span property="vocab:worksWith">Alejandro Gonz&aacute;lez I&ntilde;&aacute;rritu</span>, 
+                <span property="vocab:worksWith">Tom Hardy</span>
+        </div><br>
+        
         <div typeof="movie:film">
             <h4><span property="dc:title">The Wolf of Wall Street</span> (<em property="movie:initial_release_date">2013-12-17</em>)</h4>
             
             <a href="http://www.imdb.com/title/tt0993846" rel="foaf:page"><img src="images/wolf-of-wallstreet.jpg"/></a>
             <iframe width="560" height="315" src="https://www.youtube.com/embed/iszwuX1AK6A" frameborder="0" allowfullscreen></iframe>
-        </div> 
+            <br>
+            <strong>Works with</strong>: 
+                <span property="vocab:worksWith">Martin Scorsese</span>, 
+                <span property="vocab:worksWith">Jonah Hill</span>
+        </div><br>
                
         </div>
 	</body>
