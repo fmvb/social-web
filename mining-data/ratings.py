@@ -1,9 +1,9 @@
 def readData():
-	movies = open('movie-lens-1M/movies.dat', 'r')
+	movies = open('dataset/movies.dat', 'r')
 	print "First line movies.dat: " + movies.readline().strip()
 	movies.close()
 	
-	users = open('movie-lens-1M/users.dat', 'r')
+	users = open('dataset/users.dat', 'r')
 	print "First line users.dat: " + users.readline().strip()
 	users.close()
 
