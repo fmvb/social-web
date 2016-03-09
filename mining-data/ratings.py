@@ -5,17 +5,14 @@ def readData(filename):
     return data
     
 def trimLists(users, ratings):
-	# remove occupation and zipcode from users
     for u in users:
         del u[-1]    # remove last column: zipcode
         del u[-1]    # remove last column: occupation
     
-    # remove timestamps from ratings
     for r in ratings:
         del r[-1]    # remove last column: timestamp  
     
 if __name__ == "__main__":
-    # Read data from files
     users   = readData('users')
     movies  = readData('movies')
     ratings = readData('ratings')
