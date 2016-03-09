@@ -1,12 +1,12 @@
-def readData():
-	movies = open('dataset/movies.dat', 'r')
-	print "First line movies.dat: " + movies.readline().strip()
-	movies.close()
+def readData(filename):
+    fs = open('dataset/' + filename + '.dat', 'r')    
+    data = [line.strip().split('::') for line in fs]  
+    fs.close()                                        
+    return data                                       
 	
-	users = open('dataset/users.dat', 'r')
-	print "First line users.dat: " + users.readline().strip()
-	users.close()
-
 if __name__ == "__main__":
-    print "Reading data from movielens files....."
-    readData()
+    # Read data from files
+    users   = readData('users')
+    movies  = readData('movies')
+    ratings = readData('ratings')
+    
