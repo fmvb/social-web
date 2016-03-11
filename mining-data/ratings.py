@@ -1,3 +1,7 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
 def readData(filename):
     fs = open('dataset/' + filename + '.dat', 'r')    
     data = [line.strip().split('::') for line in fs]  
@@ -22,6 +26,3 @@ if __name__ == "__main__":
     nrMale   = len(users) - nrFemale
     print 'Female users: ' + `nrFemale` + '   (' + `len(users)` + ' total users)'
     print 'Male   users: ' + `nrMale`   + '   (' + `len(users)` + ' total users)'
-        
-    
-    
