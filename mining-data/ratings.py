@@ -33,6 +33,3 @@ if __name__ == "__main__":
     users          = readData('users')
     movies, genres = readData('movies')
     ratings        = readData('ratings')
-    
-    for i in range(10):
-        print genres[i]        
