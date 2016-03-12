@@ -8,9 +8,9 @@ def readData(filename):
     if filename == 'users':
         data = [line.strip().split('::', 3) for line in fs]
         for record in data:
-            del record[-1]
+            del record[-1]      # remove columns occupation and zipcode
     elif filename == 'movies':
-        data = []
+        data = []               
         for line in fs:
             parts = line.strip().split('::')
             parts[2] = parts[2].split('|')
@@ -18,18 +18,10 @@ def readData(filename):
     elif filename == 'ratings':
         data = [line.strip().split('::') for line in fs]
         for record in data:
-            del record[-1]    
+            del record[-1]      #remove column timestamp
     
     fs.close()                                        
     return data
-    
-def trimLists(users, ratings):
-    for u in users:
-        del u[-1]    # remove last column: zipcode
-        del u[-1]    # remove last column: occupation
-    
-    for r in ratings:
-        del r[-1]    # remove last column: timestamp  
     
 if __name__ == "__main__":
     users   = readData('users')
@@ -43,6 +35,6 @@ if __name__ == "__main__":
     #print 'Male   users: ' + `nrMale`   + '   (' + `len(users)` + ' total users)'
     
     # Printing first values to varify data reads
-    #print users[0]
-    #print movies[0]
-    #print ratings[0]
+    print users[0]
+    print movies[0]
+    print ratings[0]
