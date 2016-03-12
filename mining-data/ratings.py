@@ -13,6 +13,7 @@ def readData(filename):
         data = []
         for line in fs:
             parts = line.strip().split('::')
+            parts[2] = parts[2].split('|')
             data.append(parts)
     elif filename == 'ratings':
         data = [line.strip().split('::') for line in fs]
