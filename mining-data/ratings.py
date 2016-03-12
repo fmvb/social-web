@@ -10,13 +10,17 @@ def readData(filename):
         for record in data:
             del record[-1]      # remove columns occupation and zipcode
     elif filename == 'movies':
-        movie  = []
-        genres = []
+        movie = []
+        movie_genre = []
         for line in fs:
-            parts = line.strip().split('::')
-            genres.append(list(parts[0]) + parts[2].split('|'))
-            movie.append((parts[0], parts[1]))
-        data = (movie, genres)
+            parts   = line.strip().split('::')
+            movieId = parts[0]
+            title   = parts[1]
+            genres  = parts[2].split('|')
+            for genre in genres:
+                movie_genre.append((movieId, genre))
+            movie.append((movieId, title))
+        data = (movie, movie_genre)
     elif filename == 'ratings':
         data = [line.strip().split('::') for line in fs]
         for record in data:
@@ -30,10 +34,5 @@ if __name__ == "__main__":
     movies, genres = readData('movies')
     ratings        = readData('ratings')
     
-    for i in range(2):
-        print users[i]
-        print movies[i]
-        print genres[i]
-        print ratings[i]
-        if i < len(range(2))-1:
-            print '-------------------------------------------------'
+    for i in range(10):
+        print genres[i]        
