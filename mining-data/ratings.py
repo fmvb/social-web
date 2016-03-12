@@ -35,13 +35,14 @@ if __name__ == "__main__":
     users   = readData('users')
     movies  = readData('movies')
     ratings = readData('ratings')
-    #trimLists(users, ratings)
-        
+    
+    # Example of counting users per gender
     #nrFemale = sum(1 for x in users if x[1] == 'F')
     #nrMale   = len(users) - nrFemale
     #print 'Female users: ' + `nrFemale` + '   (' + `len(users)` + ' total users)'
     #print 'Male   users: ' + `nrMale`   + '   (' + `len(users)` + ' total users)'
     
-    print users[0]
-    print movies[0]
-    print ratings[0]
+    # Printing first values to varify data reads
+    #print users[0]
+    #print movies[0]
+    #print ratings[0]
