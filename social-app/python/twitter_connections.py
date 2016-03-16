@@ -1,6 +1,7 @@
 from optparse import OptionParser
 import twitter_auth as tw_auth
-import twitter
+#import twitter
+import tweepy
 
 def readData(filename):
     data = []
@@ -19,6 +20,9 @@ def readData(filename):
         return    
     return data
 
+def print_accounts(account_list):
+    for name, account in account_list:
+        print name + ': ' + account
 
 if __name__ == "__main__":
     parser = OptionParser()
@@ -34,6 +38,8 @@ if __name__ == "__main__":
         
     account_list = readData('tni-staff.csv')
     
-    for name, account in account_list:
-        print name + ': ' + account
-        
+    #for user in tweepy.Cursor(twitter_api.followers, screen_name=account_list[0][1]).items(200):
+        #print user.screen_name
+    
+    #print "found %d followers" % (len(query))
+    
