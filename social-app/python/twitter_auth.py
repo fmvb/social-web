@@ -1,6 +1,5 @@
 import sys
 from optparse import OptionParser
-#import twitter
 import tweepy
 
 def twitter_authenticate(auth_file):
@@ -43,16 +42,9 @@ def twitter_authenticate(auth_file):
         print 'Error in opening file ' + auth_file
         return
     
-    print CONSUMER_KEY
-    print CONSUMER_SECRET
-    print ACCESS_TOKEN
-    print ACCESS_TOKEN_SECRET
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
     twitter_api = tweepy.API(auth)
-    
-    #auth = twitter.oauth.OAuth(ACCESS_TOKEN, ACCESS_TOKEN_SECRET,CONSUMER_KEY, CONSUMER_SECRET)
-    #twitter_api = twitter.Twitter(auth=auth)
     
     return twitter_api
 
