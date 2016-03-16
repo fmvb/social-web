@@ -1,7 +1,7 @@
 from optparse import OptionParser
 import twitter_auth as tw_auth
-#import twitter
 import tweepy
+import time
 
 def readData(filename):
     data = []
@@ -12,7 +12,7 @@ def readData(filename):
             for line in fs:
                 name, account, rest = line.strip().split(',', 2)
                 if (name != '' and account !=''):
-                    data.append((name, account))
+                    data.append((name, account[1:]))
         finally:
             fs.close()
     except IOError:
@@ -36,10 +36,15 @@ if __name__ == "__main__":
         print 'Error in authentication, exiting program.'
         exit(1)
         
-    account_list = readData('tni-staff.csv')
+    account_dict = readData('tni-staff.csv')
+    print 'Naam: ' + account_dict[4][0] + ', Account: ' + account_dict[4][1]
     
-    #for user in tweepy.Cursor(twitter_api.followers, screen_name=account_list[0][1]).items(200):
-        #print user.screen_name
-    
-    #print "found %d followers" % (len(query))
-    
+    followers = []
+    for i, user in enumerate(tweepy.Cursor(twitter_api.followers, screen_name=account_dict[4][1], count=200).pages()):
+        print 'Getting page {} for followers'.format(i)
+        followers.extend(user)
+        time.sleep(60)
+            
+    print `len(followers)` + ' followers found:'
+    for user in followers:
+        print user.screen_name
