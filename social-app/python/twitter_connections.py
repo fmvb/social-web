@@ -4,7 +4,7 @@ import tweepy
 import time
 
 def readData(filename):
-    data = []
+    data = {}
     try:
         fs = open('../' + filename, 'r')
         try:
@@ -12,7 +12,7 @@ def readData(filename):
             for line in fs:
                 name, account, rest = line.strip().split(',', 2)
                 if (name != '' and account !=''):
-                    data.append((name, account[1:]))
+                    data[account[1:]] = name
         finally:
             fs.close()
     except IOError:
@@ -20,9 +20,9 @@ def readData(filename):
         return    
     return data
 
-def print_accounts(account_list):
-    for name, account in account_list:
-        print name + ': ' + account
+def print_accounts(dict):
+    for key, value in dict.iteritems():
+        print key + ': ' + value
 
 if __name__ == "__main__":
     parser = OptionParser()
@@ -36,15 +36,24 @@ if __name__ == "__main__":
         print 'Error in authentication, exiting program.'
         exit(1)
         
-    account_dict = readData('tni-staff.csv')
-    print 'Naam: ' + account_dict[4][0] + ', Account: ' + account_dict[4][1]
-    
+    account_dict = readData('test-staff.csv')
+    print `len(account_dict)` + ' people with twitter account in file test-staff.csv'
+    #print_accounts(account_dict)
+        
+    test_account = 'marleenhuysman'
     followers = []
-    for i, user in enumerate(tweepy.Cursor(twitter_api.followers, screen_name=account_dict[4][1], count=200).pages()):
-        print 'Getting page {} for followers'.format(i)
+    for i, user in enumerate(tweepy.Cursor(twitter_api.followers, screen_name=test_account, count=200).pages()):
+        print 'Getting followers page %i for account %s' % (i, test_account)
         followers.extend(user)
         time.sleep(60)
             
-    print `len(followers)` + ' followers found:'
+    connections = []
+    print `len(followers)` + ' followers found for ' + test_account
     for user in followers:
-        print user.screen_name
+        if user.screen_name in account_dict:
+            connections.append((user.screen_name, account_dict[user.screen_name]))
+    
+    print `len(connections)` + ' connections found for '  + test_account + ':'
+    if len(connections) > 0:
+        for account, name in connections:
+            print account + '\t\t' + name  
