@@ -63,3 +63,5 @@ target/
 
 # Text-based-files
 .~lock*
+twitter_auth_file
+alt_auth_file

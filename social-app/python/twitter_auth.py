@@ -1,9 +1,9 @@
 import sys
 from optparse import OptionParser
-import twitter
+import tweepy
 
 def twitter_authenticate(auth_file):
-    CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET = '', '', '', ''
+    CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET = '', '', '', ''
     
     try:
         fs = open(auth_file, 'r')
@@ -18,23 +18,23 @@ def twitter_authenticate(auth_file):
                     
             split = fs.readline().strip().split(',')    
             if (split[0] == 'CONSUMER_SECRET'):
-                CONSUMER_KEY = split[1]
+                CONSUMER_SECRET = split[1]
             else:
                 print 'Error in CONSUMER_SECRET. Check authentication file \'' + auth_file + '\'.'
                 return
                 
             split = fs.readline().strip().split(',')    
-            if (split[0] == 'OAUTH_TOKEN'):
-                CONSUMER_KEY = split[1]
+            if (split[0] == 'ACCESS_TOKEN'):
+                ACCESS_TOKEN = split[1]
             else:
-                print 'Error in OAUTH_TOKEN. Check authentication file \'' + auth_file + '\'.'
+                print 'Error in ACCESS_TOKEN. Check authentication file \'' + auth_file + '\'.'
                 return
                 
             split = fs.readline().strip().split(',')    
-            if (split[0] == 'OAUTH_TOKEN_SECRET'):
-                CONSUMER_KEY = split[1]
+            if (split[0] == 'ACCESS_TOKEN_SECRET'):
+                ACCESS_TOKEN_SECRET = split[1]
             else:
-                print 'Error in OAUTH_TOKEN_SECRET. Check authentication file \'' + auth_file + '\'.'
+                print 'Error in ACCESS_TOKEN_SECRET. Check authentication file \'' + auth_file + '\'.'
                 return
         finally:
             fs.close()
@@ -42,8 +42,12 @@ def twitter_authenticate(auth_file):
         print 'Error in opening file ' + auth_file
         return
     
-    auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET,CONSUMER_KEY, CONSUMER_SECRET)
-    twitter_api = twitter.Twitter(auth=auth)
+    
+    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+    twitter_api = tweepy.API(auth)
+    #auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET,CONSUMER_KEY, CONSUMER_SECRET)
+    #twitter_api = twitter.Twitter(auth=auth)
     return twitter_api
 
 if __name__ == "__main__":
