@@ -20,6 +20,21 @@ def readData(filename):
         return    
     return data
 
+def get_followers(username):
+    followers = []
+    for i, user in enumerate(tweepy.Cursor(twitter_api.followers, screen_name=username, count=200).pages()):
+        print 'Getting followers page %i for account %s' % (i, username)
+        followers.extend(user)
+        time.sleep(60)
+    return followers
+
+def get_connections(followers):
+    connections = []    
+    for user in followers:
+        if user.screen_name in account_dict:
+            connections.append((user.screen_name, account_dict[user.screen_name]))
+    return connections
+
 def print_accounts(dict):
     for key, value in dict.iteritems():
         print key + ': ' + value
@@ -41,19 +56,12 @@ if __name__ == "__main__":
     #print_accounts(account_dict)
         
     test_account = 'marleenhuysman'
-    followers = []
-    for i, user in enumerate(tweepy.Cursor(twitter_api.followers, screen_name=test_account, count=200).pages()):
-        print 'Getting followers page %i for account %s' % (i, test_account)
-        followers.extend(user)
-        time.sleep(60)
-            
-    connections = []
+    followers = get_followers(test_account)
     print `len(followers)` + ' followers found for ' + test_account
-    for user in followers:
-        if user.screen_name in account_dict:
-            connections.append((user.screen_name, account_dict[user.screen_name]))
-    
+            
+    connections = get_connections(followers)    
     print `len(connections)` + ' connections found for '  + test_account + ':'
+    
     if len(connections) > 0:
         for account, name in connections:
             print account + '\t\t' + name  
