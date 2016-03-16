@@ -1,3 +1,5 @@
+import sys
+from optparse import OptionParser
 import twitter
 
 def twitter_authenticate(auth_file):
@@ -45,4 +47,10 @@ def twitter_authenticate(auth_file):
     return twitter_api
 
 if __name__ == "__main__":
-    twitter_api = twitter_authenticate('twitter_auth')
+    parser = OptionParser()
+    parser.set_defaults(filename='twitter_auth_file')
+    parser.add_option('-f', '--file', dest='filename',
+                  help='File to use for twitter authentication')
+    (options, args) = parser.parse_args()
+    
+    twitter_api = twitter_authenticate(options.filename)
