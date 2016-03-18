@@ -4,7 +4,8 @@ import tweepy
 import time
 
 def readData(filename):
-    data = {}
+    name_dict, id_dict = {}, {}
+    dict_count = 0
     try:
         fs = open('../' + filename, 'r')
         try:
@@ -12,13 +13,15 @@ def readData(filename):
             for line in fs:
                 name, account, rest = line.strip().split(',', 2)
                 if (name != '' and account !=''):
-                    data[account[1:]] = name
+                    name_dict[account[1:]] = name
+                    id_dict[account[1:]]   = dict_count
+                    dict_count += 1
         finally:
             fs.close()
     except IOError:
         print 'Error opening file' + filename 
         return    
-    return data
+    return (name_dict, id_dict)
 
 def get_followers(username):
     followers = []
@@ -49,7 +52,7 @@ def write_connections(connections, id, user):
 
 def print_accounts(dict):
     for key, value in dict.iteritems():
-        print key + ': ' + value
+        print key + ': ' + `value`
 
 if __name__ == "__main__":
     parser = OptionParser()
@@ -63,16 +66,16 @@ if __name__ == "__main__":
         print 'Error in authentication, exiting program.'
         exit(1)
         
-    account_dict = readData('test-staff.csv')
+    account_dict, id_dict = readData('test-staff.csv')
     print `len(account_dict)` + ' people with twitter account in file test-staff.csv'
-    #print_accounts(account_dict)
+    #print_accounts(id_dict)
         
     test_account = 'marleenhuysman'
-    followers = get_followers(test_account)
-    print `len(followers)` + ' followers found for ' + test_account
+    #followers = get_followers(test_account)
+    #print `len(followers)` + ' followers found for ' + test_account
             
-    connections = get_connections(followers)    
-    print `len(connections)` + ' connections found for '  + test_account + ':'
-    for screen_name, name in connections:
-        print '(' + screen_name + ', ' + name + ')'
+    #connections = get_connections(followers)    
+    #print `len(connections)` + ' connections found for '  + test_account + ':'
+    #for screen_name, name in connections:
+    #    print '(' + screen_name + ', ' + name + ')'
         
