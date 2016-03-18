@@ -38,17 +38,24 @@ def get_connections(followers):
             connections.append((user.screen_name, account_dict[user.screen_name]))
     return connections
 
-def write_connections(connections, id, user):
-    fsn = open('twitter-nodes.csv', 'a')
-    fse = open('twitter-edges.csv', 'a')
+def write_connections(connections, source, account_dict, id_dict, nodes, edges):
+    #fsn = open('twitter-nodes.csv', 'a')
+    #fse = open('twitter-edges.csv', 'a')    
     
-    if fsn.readline() is None:
-        fsn.write('id,name,group\n')
-        fse.write('source,target\n')
-    else:
-        fsn.write(id, user)
-        #for account, name in connections:
-            
+    #if fsn.readline() is None:
+    #    fsn.write('id,name\n')
+    #    fse.write('source,target\n')
+    #else:
+    #    fsn.write(id, user)
+    #    for account, name in connections:
+    
+    if nodes == '':
+        nodes += 'id,name\n'
+        edges += 'source,target\n'
+    nodes += '%d, %s\n' % (id_dict[source], account_dict[source])
+    for target, name in connections:
+        edges += '%d, %d\n' % (id_dict[source], id_dict[target])
+    return (nodes, edges)
 
 def print_accounts(dict):
     for key, value in dict.iteritems():
@@ -70,12 +77,18 @@ if __name__ == "__main__":
     print `len(account_dict)` + ' people with twitter account in file test-staff.csv'
     #print_accounts(id_dict)
         
-    test_account = 'marleenhuysman'
-    #followers = get_followers(test_account)
-    #print `len(followers)` + ' followers found for ' + test_account
+    nodes = ''
+    edges = ''
+    
+    account = 'marleenhuysman'
+    followers = get_followers(account)
+    print `len(followers)` + ' followers found for ' + account
             
-    #connections = get_connections(followers)    
-    #print `len(connections)` + ' connections found for '  + test_account + ':'
-    #for screen_name, name in connections:
-    #    print '(' + screen_name + ', ' + name + ')'
-        
+    connections = get_connections(followers)    
+    print `len(connections)` + ' connections found for '  + account + ':'
+    
+    nodes, edges = write_connections(connections, account, account_dict, id_dict, nodes, edges)
+    print 'Nodes to add:'
+    print nodes
+    print 'Edges to add:'
+    print edges
