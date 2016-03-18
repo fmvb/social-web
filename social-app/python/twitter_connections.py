@@ -35,6 +35,18 @@ def get_connections(followers):
             connections.append((user.screen_name, account_dict[user.screen_name]))
     return connections
 
+def write_connections(connections, id, user):
+    fsn = open('twitter-nodes.csv', 'a')
+    fse = open('twitter-edges.csv', 'a')
+    
+    if fsn.readline() is None:
+        fsn.write('id,name,group\n')
+        fse.write('source,target\n')
+    else:
+        fsn.write(id, user)
+        #for account, name in connections:
+            
+
 def print_accounts(dict):
     for key, value in dict.iteritems():
         print key + ': ' + value
@@ -61,7 +73,6 @@ if __name__ == "__main__":
             
     connections = get_connections(followers)    
     print `len(connections)` + ' connections found for '  + test_account + ':'
-    
-    if len(connections) > 0:
-        for account, name in connections:
-            print account + '\t\t' + name  
+    for screen_name, name in connections:
+        print '(' + screen_name + ', ' + name + ')'
+        
