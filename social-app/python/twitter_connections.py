@@ -2,6 +2,7 @@ from optparse import OptionParser
 import twitter_auth as tw_auth
 import tweepy
 import time
+import os
 
 def readData(filename):
     name_dict, id_dict = {}, {}
@@ -26,7 +27,7 @@ def readData(filename):
 def get_followers(username):
     followers = []
     for i, user in enumerate(tweepy.Cursor(twitter_api.followers, screen_name=username, count=200).pages()):
-        print 'Getting followers page %i for account %s' % (i, username)
+        print 'Getting followers page %d' % i
         followers.extend(user)
         time.sleep(60)
     return followers
@@ -38,24 +39,23 @@ def get_connections(followers):
             connections.append((user.screen_name, account_dict[user.screen_name]))
     return connections
 
-def write_connections(connections, source, account_dict, id_dict, nodes, edges):
-    #fsn = open('twitter-nodes.csv', 'a')
-    #fse = open('twitter-edges.csv', 'a')    
+def write_connections(connections, source, account_dict, id_dict):
+    nodes, edges = 'twitter-nodes.csv', 'twitter-edges.csv'
+    fsn = open(nodes, 'a+') # reading and appending
+    fse = open(edges, 'a+') # reading and appending   
     
-    #if fsn.readline() is None:
-    #    fsn.write('id,name\n')
-    #    fse.write('source,target\n')
-    #else:
-    #    fsn.write(id, user)
-    #    for account, name in connections:
+    if os.stat(nodes).st_size == 0:
+        fsn.write('id,name\n')
+    if os.stat(edges).st_size == 0:
+        fse.write('source,target\n')
     
-    if nodes == '':
-        nodes += 'id,name\n'
-        edges += 'source,target\n'
-    nodes += '%d, %s\n' % (id_dict[source], account_dict[source])
+    fsn.write('%d,%s\n' % (id_dict[source], account_dict[source]))
     for target, name in connections:
-        edges += '%d, %d\n' % (id_dict[source], id_dict[target])
-    return (nodes, edges)
+        fse.write('%d,%d\n' % (id_dict[source], id_dict[target]))
+    print 'Written connections to csv files'
+    
+    fsn.close()
+    fse.close()
 
 def print_accounts(dict):
     for key, value in dict.iteritems():
@@ -77,18 +77,13 @@ if __name__ == "__main__":
     print `len(account_dict)` + ' people with twitter account in file test-staff.csv'
     #print_accounts(id_dict)
         
-    nodes = ''
-    edges = ''
-    
     account = 'marleenhuysman'
+    print 'Account: ' + account
     followers = get_followers(account)
-    print `len(followers)` + ' followers found for ' + account
+    print `len(followers)` + ' followers found'
             
     connections = get_connections(followers)    
-    print `len(connections)` + ' connections found for '  + account + ':'
+    print `len(connections)` + ' NI-connections found'
     
-    nodes, edges = write_connections(connections, account, account_dict, id_dict, nodes, edges)
-    print 'Nodes to add:'
-    print nodes
-    print 'Edges to add:'
-    print edges
+    if len(connections) > 0:
+        write_connections(connections, account, account_dict, id_dict)
