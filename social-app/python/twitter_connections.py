@@ -83,10 +83,6 @@ def write_error(account):
     fs.write('%s\n' % account)
     fs.close()
     
-def print_accounts(dict):
-    for key, value in dict.iteritems():
-        print key + ': ' + `value`
-
 if __name__ == "__main__":
     parser = OptionParser()
     parser.set_defaults(authfile='twitter_auth_file', inputfile='tni-staff.csv')
@@ -103,7 +99,6 @@ if __name__ == "__main__":
         
     account_dict, id_dict = read_data(options.inputfile)
     print `len(account_dict)` + ' people with twitter account in file ' + options.inputfile
-    #print_accounts(id_dict)
     
     progress = read_progress('progress.csv')
         
@@ -120,9 +115,7 @@ if __name__ == "__main__":
                 if len(connections) > 0:
                     write_connections(connections, account, account_dict, id_dict)
                 write_progress(account)
-            except tweepy.TweepError as e:
-                #print e.message[0]['code']  # prints 34
-                #print e.args[0][0]['code']  # prints 34
+            except tweepy.TweepError:
                 print 'Error while fetching followers'
                 write_error(account)
         else:
