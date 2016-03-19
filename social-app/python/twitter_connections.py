@@ -40,11 +40,11 @@ def read_progress(filename):
             return    
     return progress
                 
-def get_followers(username):
+def get_followers(account):
     followers = []
-    for i, user in enumerate(tweepy.Cursor(twitter_api.followers, screen_name=username, count=200).pages()):
-        print 'Getting followers page %d' % i
-        followers.extend(user)
+    for i, page in enumerate(tweepy.Cursor(twitter_api.followers, screen_name=account, count=200).pages()):
+        print 'Getting followers page %d' % (i+1)
+        followers.extend(page)
         time.sleep(60)
     return followers
 
@@ -72,30 +72,32 @@ def write_connections(connections, source, account_dict, id_dict):
     
     fsn.close()
     fse.close()
-    
-    fs = open('progress.csv', 'a') # append account to progress file
-    fs.write('%s\n' % source)
-    fs.close()
         
-
+def write_progress(user):
+    fs = open('progress.csv', 'a') # append account to progress file
+    fs.write('%s\n' % user)
+    fs.close()
+    
 def print_accounts(dict):
     for key, value in dict.iteritems():
         print key + ': ' + `value`
 
 if __name__ == "__main__":
     parser = OptionParser()
-    parser.set_defaults(filename='twitter_auth_file')
-    parser.add_option('-f', '--file', dest='filename',
+    parser.set_defaults(authfile='twitter_auth_file', inputfile='tni-staff.csv')
+    parser.add_option('-a', '--auth', dest='authfile',
                   help='File to use for twitter authentication')
+    parser.add_option('-f', '--file', dest='inputfile',
+                  help='Inputfile with staff accounts')              
     (options, args) = parser.parse_args()
     
-    twitter_api = tw_auth.twitter_authenticate(options.filename)
+    twitter_api = tw_auth.twitter_authenticate(options.authfile)
     if (twitter_api == None):
         print 'Error in authentication, exiting program.'
         exit(1)
         
-    account_dict, id_dict = read_data('test-staff.csv')
-    print `len(account_dict)` + ' people with twitter account in file test-staff.csv'
+    account_dict, id_dict = read_data(options.inputfile)
+    print `len(account_dict)` + ' people with twitter account in file ' + options.inputfile
     #print_accounts(id_dict)
     
     progress = read_progress('progress.csv')
@@ -111,5 +113,6 @@ if __name__ == "__main__":
             
             if len(connections) > 0:
                 write_connections(connections, account, account_dict, id_dict)
+            write_progress(account)
         else:
             print 'Connections already harvested for ' + account
