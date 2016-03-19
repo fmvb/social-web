@@ -44,9 +44,8 @@ def twitter_authenticate(auth_file):
     
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-    twitter_api = tweepy.API(auth)
     
-    return twitter_api
+    return tweepy.API(auth)
 
 if __name__ == "__main__":
     parser = OptionParser()

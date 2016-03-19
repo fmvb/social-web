@@ -4,13 +4,13 @@ import tweepy
 import time
 import os
 
-def readData(filename):
+def read_data(filename):
     name_dict, id_dict = {}, {}
     dict_count = 0
     try:
         fs = open('../' + filename, 'r')
         try:
-            firstline = fs.readline()
+            fs.readline()       # header line contains no account info
             for line in fs:
                 name, account, rest = line.strip().split(',', 2)
                 if (name != '' and account !=''):
@@ -20,10 +20,26 @@ def readData(filename):
         finally:
             fs.close()
     except IOError:
-        print 'Error opening file' + filename 
+        print 'Error opening file ' + filename 
         return    
     return (name_dict, id_dict)
 
+def read_progress(filename):
+    progress = set()
+    if os.path.isfile(filename):
+        try:
+            fs = open(filename, 'r')
+            try:
+                for line in fs:
+                    key = line.strip()
+                    progress.add(key)
+            finally:
+                fs.close()
+        except IOError:
+            print 'Error opening progress file ' + filename 
+            return    
+    return progress
+                
 def get_followers(username):
     followers = []
     for i, user in enumerate(tweepy.Cursor(twitter_api.followers, screen_name=username, count=200).pages()):
@@ -42,7 +58,7 @@ def get_connections(followers):
 def write_connections(connections, source, account_dict, id_dict):
     nodes, edges = 'twitter-nodes.csv', 'twitter-edges.csv'
     fsn = open(nodes, 'a+') # reading and appending
-    fse = open(edges, 'a+') # reading and appending   
+    fse = open(edges, 'a+') # reading and appending
     
     if os.stat(nodes).st_size == 0:
         fsn.write('id,name\n')
@@ -56,6 +72,11 @@ def write_connections(connections, source, account_dict, id_dict):
     
     fsn.close()
     fse.close()
+    
+    fs = open('progress.csv', 'a') # append account to progress file
+    fs.write(source)
+    fs.close()
+        
 
 def print_accounts(dict):
     for key, value in dict.iteritems():
@@ -73,17 +94,23 @@ if __name__ == "__main__":
         print 'Error in authentication, exiting program.'
         exit(1)
         
-    account_dict, id_dict = readData('test-staff.csv')
+    account_dict, id_dict = read_data('test-staff.csv')
     print `len(account_dict)` + ' people with twitter account in file test-staff.csv'
     #print_accounts(id_dict)
+    
+    progress = read_progress('progress.csv')
         
     account = 'marleenhuysman'
-    print 'Account: ' + account
-    followers = get_followers(account)
-    print `len(followers)` + ' followers found'
-            
-    connections = get_connections(followers)    
-    print `len(connections)` + ' NI-connections found'
     
-    if len(connections) > 0:
-        write_connections(connections, account, account_dict, id_dict)
+    if account not in progress:
+        print 'Account: ' + account
+        followers = get_followers(account)
+        print `len(followers)` + ' followers found'
+                
+        connections = get_connections(followers)    
+        print `len(connections)` + ' NI-connections found'
+        
+        if len(connections) > 0:
+            write_connections(connections, account, account_dict, id_dict)
+    else:
+        print 'Connections already harvested for ' + account
