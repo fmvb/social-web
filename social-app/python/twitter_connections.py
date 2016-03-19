@@ -56,7 +56,7 @@ def get_connections(followers):
     return connections
 
 def write_connections(connections, source, account_dict, id_dict):
-    nodes, edges = 'twitter-nodes.csv', 'twitter-edges.csv'
+    nodes, edges = 'nodes.csv', 'edges.csv'
     fsn = open(nodes, 'a+') # reading and appending
     fse = open(edges, 'a+') # reading and appending
     
@@ -74,7 +74,7 @@ def write_connections(connections, source, account_dict, id_dict):
     fse.close()
     
     fs = open('progress.csv', 'a') # append account to progress file
-    fs.write(source)
+    fs.write('%s\n' % source)
     fs.close()
         
 
@@ -100,17 +100,16 @@ if __name__ == "__main__":
     
     progress = read_progress('progress.csv')
         
-    account = 'marleenhuysman'
-    
-    if account not in progress:
-        print 'Account: ' + account
-        followers = get_followers(account)
-        print `len(followers)` + ' followers found'
-                
-        connections = get_connections(followers)    
-        print `len(connections)` + ' NI-connections found'
-        
-        if len(connections) > 0:
-            write_connections(connections, account, account_dict, id_dict)
-    else:
-        print 'Connections already harvested for ' + account
+    for account in account_dict:    
+        if account not in progress:
+            print '\nAccount: ' + account
+            followers = get_followers(account)
+            print `len(followers)` + ' followers found'
+                    
+            connections = get_connections(followers)    
+            print `len(connections)` + ' NI-connections found'
+            
+            if len(connections) > 0:
+                write_connections(connections, account, account_dict, id_dict)
+        else:
+            print 'Connections already harvested for ' + account
