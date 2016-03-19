@@ -78,7 +78,7 @@ def write_progress(account):
     fs.write('%s\n' % account)
     fs.close()
     
-def write_error(user):
+def write_error(account):
     fs = open('error.csv', 'a') # append account to progress file
     fs.write('%s\n' % account)
     fs.close()
