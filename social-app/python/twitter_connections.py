@@ -73,9 +73,14 @@ def write_connections(connections, source, account_dict, id_dict):
     fsn.close()
     fse.close()
         
-def write_progress(user):
+def write_progress(account):
     fs = open('progress.csv', 'a') # append account to progress file
-    fs.write('%s\n' % user)
+    fs.write('%s\n' % account)
+    fs.close()
+    
+def write_error(user):
+    fs = open('error.csv', 'a') # append account to progress file
+    fs.write('%s\n' % account)
     fs.close()
     
 def print_accounts(dict):
@@ -105,14 +110,20 @@ if __name__ == "__main__":
     for account in account_dict:    
         if account not in progress:
             print '\nAccount: ' + account
-            followers = get_followers(account)
-            print `len(followers)` + ' followers found'
+            try:
+                followers = get_followers(account)
+                print `len(followers)` + ' followers found'
                     
-            connections = get_connections(followers)    
-            print `len(connections)` + ' NI-connections found'
+                connections = get_connections(followers)    
+                print `len(connections)` + ' NI-connections found'
             
-            if len(connections) > 0:
-                write_connections(connections, account, account_dict, id_dict)
-            write_progress(account)
+                if len(connections) > 0:
+                    write_connections(connections, account, account_dict, id_dict)
+                write_progress(account)
+            except tweepy.TweepError as e:
+                #print e.message[0]['code']  # prints 34
+                #print e.args[0][0]['code']  # prints 34
+                print 'Error while fetching followers'
+                write_error(account)
         else:
             print 'Connections already harvested for ' + account
