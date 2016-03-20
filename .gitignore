@@ -65,3 +65,4 @@ target/
 .~lock*
 twitter_auth_file
 alt_auth_file
+social-app/python/*.csv
