@@ -1,4 +1,4 @@
-id,name
+id,label
 50,Jan Krans
 74,Kees Boersma
 52,Reinoud Oosting
@@ -22,7 +22,7 @@ id,name
 59,Ali Khalili
 63,Stefan Schlobach
 20,Filip Ilievski
-56,Frank van Harmelen 
+56,Frank van Harmelen
 3,Samer Faraj
 88,Pauline van Wierst
 62,Laurens Rietveld
