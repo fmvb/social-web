@@ -85,11 +85,11 @@ def write_error(account):
     
 if __name__ == "__main__":
     parser = OptionParser()
-    parser.set_defaults(authfile='twitter_auth_file', inputfile='tni-staff.csv')
+    parser.set_defaults(authfile='twitter_auth_file', input_file='tni-staff.csv')
     parser.add_option('-a', '--auth', dest='authfile',
                   help='File to use for twitter authentication')
-    parser.add_option('-f', '--file', dest='inputfile',
-                  help='Inputfile with staff accounts')              
+    parser.add_option('-f', '--file', dest='input_file',
+                  help='Input file with staff accounts')              
     (options, args) = parser.parse_args()
     
     twitter_api = tw_auth.twitter_authenticate(options.authfile)
@@ -97,7 +97,7 @@ if __name__ == "__main__":
         print 'Error in authentication, exiting program.'
         exit(1)
         
-    account_dict, id_dict = read_data(options.inputfile)
+    account_dict, id_dict = read_data(options.input_file)
     print `len(account_dict)` + ' people with twitter account in file ' + options.inputfile
     
     progress = read_progress('progress.csv')
