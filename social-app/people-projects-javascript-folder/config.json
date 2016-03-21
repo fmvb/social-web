@@ -3,14 +3,14 @@
   "version": "1.0",
   "data": "data.json",
   "logo": {
-    "file": "",
-    "link": "",
-    "text": "Jelmer Langbroek"
+    "file": "http://www.emgo.nl/_ui/img/logo_vu.jpg",
+    "link": "http://www.vu.nl/nl/index.aspx",
+    "text": "Alberto Benedetti, Anne van Gorkom, Jelmer Langbroek, Martijn van Beest"
   },
   "text": {
     "more": "As the theme for this year's final assignment is related to the research that is carried out in the Network institute or the researchers that compose it, in this report we present and analyze the social web application we built to visualize connections among members of the Network Institute. The application shows not only connections among members of the Network Institute, but also the relations among projects and researchers who are working on them. The results are visible through graphs that clusters with different colors the members of the Network Institute who are working together on the same project.",
     "intro": "This graph shows on what projects researchers from the network institute work on.",
-    "title": "Vizualisation projects"
+    "title": "Visualization projects"
   },
   "legend": {
     "edgeLabel": "links between projects and researchers",
